@@ -14,21 +14,21 @@ pipeline {
                 sh 'ls -la'
 
                 echo "📄 Showing Dockerfile:"
-                sh 'cat Dockerfile || echo "❌ Dockerfile not found!"'
+                sh 'cat Dockerfile || echo \"❌ Dockerfile not found!\"'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                echo "🐳 Building Docker image..."
-                sh '/usr/local/bin/docker build -t mini-app .'
+                echo "🐳 Building Docker image (flask-app-demo)..."
+                sh '/usr/local/bin/docker build -t flask-app-demo .'
             }
         }
 
         stage('Load to Minikube') {
             steps {
-                echo "📦 Loading image into Minikube..."
-                sh '/opt/homebrew/bin/minikube image load mini-app'
+                echo "📦 Loading flask-app-demo into Minikube..."
+                sh '/opt/homebrew/bin/minikube image load flask-app-demo'
             }
         }
 
