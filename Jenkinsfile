@@ -1,12 +1,15 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Clone Repo') {
-            steps {
-                checkout scm
-            }
-        }
+    stage('Clone Repo') {
+    steps {
+        deleteDir()             // clean workspace
+        checkout scm            // clone fresh repo
+        sh 'ls -la'             // check what's actually there
+        sh 'cat Dockerfile'     // debug: confirm file exists
+    }
+}
+
 
         stage('Build Docker Image') {
             steps {
