@@ -21,7 +21,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo "🐳 Building Docker image (flask-app-demo)..."
-                sh '/usr/local/bin/docker build -t flask-app-demo .'
+                sh 'DOCKER_CONFIG=/tmp/docker /usr/local/bin/docker build -t flask-app-demo .'
+
             }
         }
 
