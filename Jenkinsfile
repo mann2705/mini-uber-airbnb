@@ -2,11 +2,10 @@ pipeline {
     agent any
 
     environment {
-        PATH = "/opt/homebrew/bin:$PATH"  // Ensure Jenkins can access kubectl + minikube
+        PATH = "/opt/homebrew/bin:/usr/local/bin:$PATH"
     }
 
     stages {
-
         stage('Clone Repo') {
             steps {
                 echo '🧹 Cleaning workspace...'
@@ -23,23 +22,22 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo '🐳 Building Docker image (flask-app-demo)...'
-                // Avoid using credential helpers that Jenkins doesn't support
-                sh 'DOCKER_CONFIG=/tmp/docker docker build -t flask-app-demo .'
+                sh 'DOCKER_CONFIG=/tmp/docker /usr/local/bin/docker build -t flask-app-demo .'
             }
         }
 
         stage('Load to Minikube') {
             steps {
                 echo '📦 Loading Docker image into Minikube...'
-                sh 'minikube image load flask-app-demo'
+                sh '/opt/homebrew/bin/minikube image load flask-app-demo'
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
                 echo '🚀 Deploying to Kubernetes...'
-                sh 'kubectl apply -f k8s/deployment.yaml'
-                sh 'kubectl apply -f k8s/service.yaml'
+                sh '/usr/local/bin/kubectl apply -f k8s/deployment.yaml'
+                sh '/usr/local/bin/kubectl apply -f k8s/service.yaml'
             }
         }
     }
